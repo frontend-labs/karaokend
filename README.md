@@ -6,6 +6,10 @@ sudo apt-get install mysql-server
 ```
 
 ```
+sudo gem install json
+```
+
+```
 sudo gem install sinatra
 ```
 
