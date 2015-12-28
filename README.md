@@ -6,6 +6,15 @@ sudo gem install sinatra
 ```
 
 ```
+sudo apt-get install libmysqlclient-dev
+```
+
+```
+sudo gem install mysql
+```
+
+
+```
 sudo npm install
 ```
 
