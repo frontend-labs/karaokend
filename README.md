@@ -2,11 +2,11 @@
 karaoke-frontend
 
 ```
-sudo npm install
+sudo gem install sinatra
 ```
 
 ```
-sudo gem install sinatra
+sudo npm install
 ```
 
 ```
