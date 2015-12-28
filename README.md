@@ -2,6 +2,10 @@
 karaoke-frontend
 
 ```
+sudo apt-get install mysql-server
+```
+
+```
 sudo gem install sinatra
 ```
 
