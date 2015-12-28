@@ -39,3 +39,7 @@ npm-debug.log
 *.orig
 
 bower_components/
+
+
+public/static/js/libs/
+
