@@ -37,3 +37,5 @@ npm-debug.log
 
 # conflict files
 *.orig
+
+bower_components/
