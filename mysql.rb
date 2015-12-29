@@ -3,8 +3,14 @@
 require "mysql"
 
 begin
+	  require './config/local_config.rb'
+rescue LoadError
+end
 
-    con = Mysql.new 'localhost', 'root', '12022009', 'karaokend'
+
+begin
+
+    con = Mysql.new 'localhost', 'root', RbConfig.pwd, 'karaokend'
 
     rs = con.query("SELECT * FROM song")
     n_rows = rs.num_rows
