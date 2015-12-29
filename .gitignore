@@ -45,3 +45,5 @@ public/static/js/libs/
 public/
 
 config/
+config/local.yml
+
