@@ -67,6 +67,9 @@ put "/songs/:id" do
 	flag = true
 	newRow = {}
 	id = 0
+	mainQuery = 'UPDATE song SET '
+	setQuery = ''
+	whereQuery = 'WHERE id = '
 
 	# puts "#{params[:id]}"
 	# puts "#{params[:title]}"
@@ -78,14 +81,16 @@ put "/songs/:id" do
 			break
 		when "id"
 			id = v
+			whereQuery = whereQuery + id
 		else
-			puts "#{k}: #{v}"
+			setQuery = setQuery + k + "=" + v + ", "
+			# puts "#{k}: #{v}"
 		end
 	end
 
-	puts id
+	puts mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
 
-	""
+
 
     # rs = con.query("")
 
