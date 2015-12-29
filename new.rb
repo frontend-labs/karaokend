@@ -26,13 +26,21 @@ get "/" do
   redirect '/index.html'
 end
 
-
+# GET METHOD
 get '/songs' do
-	json = {}
 	newArray = []
 	newRow= {}
 
-    rs = con.query("SELECT s.id, s.title, s.duration, REPLACE( p.url,  '__hash__', s.hash ) AS url, REPLACE( p.preview,  '__hash__', s.hash ) AS preview, s.date, s.votes FROM song AS s INNER JOIN provider AS p WHERE s.id_provider = p.id")
+    rs = con.query("SELECT s.id,
+						   s.title,
+				           s.duration,
+				           REPLACE( p.url,  '__hash__', s.hash ) AS url,
+				           REPLACE( p.preview,  '__hash__', s.hash ) AS preview,
+				           s.date,
+						   s.votes
+						   FROM song AS s
+						   INNER JOIN provider AS p
+						   WHERE s.id_provider = p.id")
 
     n_rows = rs.num_rows
 
@@ -40,8 +48,8 @@ get '/songs' do
 		newRow = {
 			"id" => "#{row['id']}",
 			"title" => "#{row['title'].force_encoding("UTF-8")}",
-			"url"=> "#{row['url'].force_encoding("UTF-8")}",
-			"preview"=> "#{row['preview'].force_encoding("UTF-8")}",
+			"url"=> "#{row['url']}",
+			"preview"=> "#{row['preview']}",
 			"duration"=> "#{row['duration']}",
 			"votes"=> "#{row['votes']}",
 			"date"=> "#{row['date']}"
@@ -54,49 +62,67 @@ get '/songs' do
 end
 
 
-put "/authors/:id" do
-
-	array = []
-	newArray = []
-	response = []
-
-	json = {}
-	path = 'public/json/authors.json'
-
-	file = File.read(path)
-	array = JSON.parse(file)
-
-	req = JSON.parse(request.body.read)
+put "/songs/:id" do
 
 	flag = true
 	newRow = {}
+	id = 0
 
-	array.each do |row|
-		if row["id"] == "#{params[:id]}"
-			row["name"] = "#{req['name']}"
-			newArray.push(row)
-			flag = false
+	# puts "#{params[:id]}"
+	# puts "#{params[:title]}"
+
+
+	params.each do |k, v|
+		case k
+		when "splat", "captures"
+			break
+		when "id"
+			id = v
 		else
-			#puts row
-			newArray.push(row)
+			puts "#{k}: #{v}"
 		end
 	end
 
-#{"id"=>"12", "name"=>"name 12", "photo"=>"12.jpg", "twitter"=>"@tuit12", "url"=>"https://www.google.com.pe/?q=12"}
+	puts id
 
-	if flag
-		puts "no entro!!!!"
-		newRow = {"id" => "#{params[:id]}", "name"=> "#{req['name']}", "photo" => "#{req['photo']}", "twitter" => "#{req['twitter']}", "url" => "#{req['url']}" }
-		puts newRow
-		newArray.push(newRow)
-	end
+	""
 
-	File.write(path, newArray.to_json)
+    # rs = con.query("")
 
-	json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
-	response.push(json)
+	# path = 'public/json/authors.json'
+	# file = File.read(path)
+	# array = JSON.parse(file)
+	# req = JSON.parse(request.body.read)
 
-	response.to_json
+	# array.each do |row|
+	# 	if row["id"] == "#{params[:id]}"
+	# 		row["name"] = "#{req['name']}"
+	# 		newArray.push(row)
+	# 		flag = false
+	# 	else
+	# 		#puts row
+	# 		newArray.push(row)
+	# 	end
+	# end
+
+
+	# if flag
+	# 	puts "no entro!!!!"
+	# 	newRow = {"id" => "#{params[:id]}", "name"=> "#{req['name']}", "photo" => "#{req['photo']}", "twitter" => "#{req['twitter']}", "url" => "#{req['url']}" }
+	# 	puts newRow
+	# 	newArray.push(newRow)
+	# end
+
+	# File.write(path, newArray.to_json)
+
+	# json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
+	# response.push(json)
+
+	# response.to_json
+
+
+
+
 end
 
 
