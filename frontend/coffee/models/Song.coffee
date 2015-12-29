@@ -1,13 +1,14 @@
 define(['backbone'], (Backbone) ->
 	# Creamos un modelo de Backbone
-	Author = Backbone.Model.extend({
+	Song = Backbone.Model.extend({
 		# Defino los atributos por defecto del modelo
 		defaults : {
-			id      : 0
-			name  : 'name por default'
-			photo  : '0.jpg'
-			twitter : '@tuit0'
-			url     : 'https://www.google.com.pe/?q=0'
+			id          : 0
+			id_provider : 1
+			title       : 'jon doe video'
+			hash        : '0.jpg'
+			duration    : '00:00'
+			votes       : '0'
 		},
 		# Pseudo constructor del modelo, se ejecuta cuando un modelo es instanciado
 		initialize : () ->
@@ -25,5 +26,5 @@ define(['backbone'], (Backbone) ->
 			return
 	})
 
-	return Author
+	return Song
 )

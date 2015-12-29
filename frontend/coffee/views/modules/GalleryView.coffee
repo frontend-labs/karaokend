@@ -1,5 +1,5 @@
 
-define(['backbone', 'underscore', 'views/modules/childrens/GalleryRow',  'models/collections/Authors'], (Backbone, _, galleryRow, Authors) ->
+define(['backbone', 'underscore', 'views/modules/childrens/GalleryRow', 'models/collections/YTSongs'], (Backbone, _, galleryRow, YTSongs) ->
 
 	# Creamos la vista principal que contendrá nuestras vistas hijas
 	GalleryView = Backbone.View.extend({
@@ -13,22 +13,21 @@ define(['backbone', 'underscore', 'views/modules/childrens/GalleryRow',  'models
 			this.dom.txtPhoto = this.$('#photo', this.dom.frmAuthor)
 			this.dom.txtTwitter = this.$('#twitter', this.dom.frmAuthor)
 			this.dom.txtUrl = this.$('#url', this.dom.frmAuthor)
+			this.dom.txtSearchSong = this.$('#search-field', this.$el)
+
 			#console.log('catchDom')
 			return
 		initialize: () ->
 			# _.bindAll(this) hace que las funciones apunten siempre al "this" del objeto principal
-			_.bindAll(this, 'render', 'addAuthor', 'newAuthor')
+			_.bindAll(this, 'render', 'newAuthor')
 
 			# Asignamos a la variable "collection" una instancia de nuestra Colección
-			this.collection = new Authors()
-
-			# Traemos la collección desde el servidor, esto realizará un GET hacia la url de la colección
-			this.collection.fetch()
+			this.collection = new YTSongs()
 
 			# Ejecutamos la funcion 'addAuthor' cuando escuchamos el evento 'add' en la colección
-			this.listenTo(this.collection, 'add', this.addAuthor)
+			this.listenTo(this.collection, 'add', this.addSong)
 			# Ejecutamos la funcion 'removeAuthor' cuando escuchamos el evento 'remove' en la colección
-			this.listenTo(this.collection, 'remove', this.removeAuthor)
+			# this.listenTo(this.collection, 'remove', this.removeAuthor)
 
 			this.catchDom()
 			return
@@ -38,21 +37,12 @@ define(['backbone', 'underscore', 'views/modules/childrens/GalleryRow',  'models
 			# Aqui renderizo la vista principal, la cargo con datos si deseo, en este caso no la necesito
 			return
 		,
-		# Cuando hubo un "add" en la colección ejecutamos esta función y recibimos como parametro el modelo afectado
-		addAuthor: (modelo) ->
-			# Creamos una instancia de una vista hija y le pasamos su modelo recientemente creado
-			view = new galleryRow({model : modelo, collection: this.collection})
+		addSong: () ->
+			# Aqui renderizo la vista principal, la cargo con datos si deseo, en este caso no la necesito
+			view = new galleryRow({model: modelo, collection: this.collection})
+			this.$el.find("tbody").append(view.render().el)
+			return
 
-			# Appeneamos dentro de $('.authors') el nuevo elemento que nos devuelve la función render de la vista hija
-			this.$el.find('.authors').append( view.render().el )
-			return
-		,
-		# Cuando hubo un "remove" en la colección ejecutamos esta función y recibimos como parámetro el modelo afectado
-		removeAuthor: (modelo) ->
-			# Destruimos el modelo
-			modelo.destroy()
-			return
-		,
 		newAuthor: (e) ->
 			authorData = {
 				id: this.dom.txtId.val()
@@ -61,14 +51,21 @@ define(['backbone', 'underscore', 'views/modules/childrens/GalleryRow',  'models
 				twitter: this.dom.txtTwitter.val()
 				url: this.dom.txtUrl.val()
 			}
-
 			#console.log(this.collection)
 			this.collection.create(authorData)
-
 			return
+		,
+		searchVideo: (e) ->
+			if e.keyCode is 13
+				val = this.dom.txtSearchSong.val()
+				#this.collection.fetch({data:{"q": this.dom.txtSearchSong.val()}})
+				this.addSong()
+				return false
+			return true
 		,
 		events: {
 			"click #btnSubmit": "newAuthor"
+			"keydown #search-field": "searchVideo"
 		}
 
 	})

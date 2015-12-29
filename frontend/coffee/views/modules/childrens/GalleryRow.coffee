@@ -6,24 +6,21 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		collection: null,
 		tagName: "li",
 		events: {
-			"dblclick input": "editAuthor",
-			"keypress input": "updateAuthor",
-			"click .remove": "deleteAuthor"
+			"click .mdl-checkbox__input": "selectSong"
 		},
-		template : $('#tplAuthor').html(),
+		template : $('#tplSong').html(),
 		dom: {},
 		catchDom: () ->
 			this.dom.txtName = this.$el.find('input')
 			#console.log('catchDom')
 			return
 		initialize: () ->
-			_.bindAll(this, 'render', 'deleteAuthor', 'editAuthor', 'updateAuthor')
+			_.bindAll(this, 'render', 'selectSong')
 
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "change" en el modelo y lanzamos la función "render" de la vista hija actual
 			this.listenTo(this.model, 'change', this.render)
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "destroy" en el modelo y lanzamos la función "remove" de la vista hija actual
 			this.listenTo(this.model, 'destroy', this.remove)
-			
 			return
 		,
 		render : () ->
@@ -33,9 +30,9 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			# Retornamos this para poder usar el elemento generado
 			return this
 		,
-		deleteAuthor: () ->
+		selectSong: () ->
 			# Removemos el modelo seleccionado desde su colección correspondiente
-			this.collection.remove(this.model)
+			# this.collection.remove(this.model)
 			return
 		,
 		editAuthor: () ->
