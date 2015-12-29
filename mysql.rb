@@ -1,16 +1,14 @@
 #!/usr/bin/ruby
 
-require "mysql"
+require 'mysql'
+require 'yaml'
+
+config = YAML.load_file('config/local.yml')
+mysql = config['mysql']
 
 begin
-	  require './config/local_config.rb'
-rescue LoadError
-end
 
-
-begin
-
-    con = Mysql.new 'localhost', 'root', RbConfig.pwd, 'karaokend'
+    con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
     rs = con.query("SELECT * FROM song")
     n_rows = rs.num_rows

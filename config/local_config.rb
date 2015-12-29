@@ -1,3 +1,0 @@
-RbConfig.pwd = 'clave'
-
-
