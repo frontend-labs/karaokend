@@ -15,6 +15,7 @@ sudo gem install sinatra
 
 ```
 sudo apt-get install libmysqlclient-dev
+sudo apt-get install ruby1.9.1-dev
 ```
 
 ```
