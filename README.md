@@ -1,8 +1,4 @@
 # karaokend
-<<<<<<< HEAD
-=======
-
->>>>>>> 357d42ae21f960a2a02253562c8028c54e22151e
 karaoke-frontend
 
 ```
@@ -48,7 +44,3 @@ y para restaurar el .json
 ```
 gulp backup
 ```
-<<<<<<< HEAD
-=======
-
->>>>>>> 357d42ae21f960a2a02253562c8028c54e22151e
