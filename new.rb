@@ -142,9 +142,7 @@ bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, vot
 
 
 rs = con.query(bodyQuery)
-		
 puts con.affected_rows
-
 
 if con.affected_rows > 0  
 	json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
@@ -160,35 +158,30 @@ end
 
 
 
+delete "/songs/:id" do
 
-
-
-delete "/authors/:id" do
-
-	array = []
-	newArray = []
 	response = []
-
+	query = []
 	json = {}
-	path = 'public/json/authors.json'
 
-	file = File.read(path)
-	array = JSON.parse(file)
+	id = "#{params[:id]}"
 
-	array.each do |row|
-		if row["id"] == "#{params[:id]}"
-			puts "se eliminara"
-		else
-			newArray.push(row)
-		end
+	query = "DELETE FROM song WHERE id = " + id
+
+	rs = con.query(query)
+
+	puts con.affected_rows
+
+
+	if con.affected_rows > 0  
+		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Eliminado correctamente", :status => "1"}
+	else
+		json = {:data => {}, "msg" => "El registro no fue eliminado", :status => "0"}
 	end
 
-	File.write(path, newArray.to_json)
-
-	json = {:data => { :id => "#{params[:id]}" }, "msg" => "Eliminado correctamente", :status => "1"}
 	response.push(json)
-
 	response.to_json
+
 end
 
 
