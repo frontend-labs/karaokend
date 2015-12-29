@@ -7,6 +7,7 @@ require 'yaml'
 config = YAML.load_file('config/local.yml')
 mysql = config['mysql']
 
+
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
@@ -19,6 +20,7 @@ before do
 			'Access-Control-Allow-Methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 			'Access-Control-Allow-Headers' => 'X-Requested-With, X-Prototype-Version',
 			'Access-Control-Max-Age' => '1728000'
+
 end
 
 
@@ -57,6 +59,9 @@ get '/songs' do
 		newArray.push(newRow)
 	}
 
+		
+
+
 	newArray.to_json
 
 end
@@ -69,66 +74,93 @@ put "/songs/:id" do
 	id = 0
 	mainQuery = 'UPDATE song SET '
 	setQuery = ''
+	query = ''
 	whereQuery = 'WHERE id = '
+	response = []
+	json = {}
 
-	# puts "#{params[:id]}"
-	# puts "#{params[:title]}"
-
+	id = "#{params[:id]}"
+	whereQuery = whereQuery + id
 
 	params.each do |k, v|
 		case k
 		when "splat", "captures"
 			break
-		when "id"
-			id = v
-			whereQuery = whereQuery + id
 		else
-			setQuery = setQuery + k + "=" + v + ", "
-			# puts "#{k}: #{v}"
+			setQuery = setQuery + k + "= '"  + v + "', "
+			puts "#{k}: #{v}"
 		end
 	end
 
-	puts mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
+	query = mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
 
 
+	#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
 
-    # rs = con.query("")
+    	rs = con.query(query)
+		
+	puts con.affected_rows
 
-	# path = 'public/json/authors.json'
-	# file = File.read(path)
-	# array = JSON.parse(file)
-	# req = JSON.parse(request.body.read)
+	if con.affected_rows > 0  
+		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
+	else
+		json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
+	end
 
-	# array.each do |row|
-	# 	if row["id"] == "#{params[:id]}"
-	# 		row["name"] = "#{req['name']}"
-	# 		newArray.push(row)
-	# 		flag = false
-	# 	else
-	# 		#puts row
-	# 		newArray.push(row)
-	# 	end
-	# end
-
-
-	# if flag
-	# 	puts "no entro!!!!"
-	# 	newRow = {"id" => "#{params[:id]}", "name"=> "#{req['name']}", "photo" => "#{req['photo']}", "twitter" => "#{req['twitter']}", "url" => "#{req['url']}" }
-	# 	puts newRow
-	# 	newArray.push(newRow)
-	# end
-
-	# File.write(path, newArray.to_json)
-
-	# json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
-	# response.push(json)
-
-	# response.to_json
-
-
+	response.push(json)
+	response.to_json
 
 
 end
+
+
+
+
+
+post '/songs' do
+
+query = ''
+setQuery = ''
+headQuery = ''
+bodyQuery = "" 
+response = [] 
+
+current_time = Time.now.getutc
+time = current_time.getlocal("-05:00")
+
+id_provider = "#{params[:id_provider]}"
+title = "#{params[:title]}"
+hash = "#{params[:hash]}"
+duration = "#{params[:duration]}"
+date = time.to_s.slice(0, time.to_s.length - 6)
+votes = '0'
+
+bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+
+#puts bodyQuery
+#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
+
+
+rs = con.query(bodyQuery)
+		
+puts con.affected_rows
+
+
+if con.affected_rows > 0  
+	json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
+else
+	json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
+end
+
+response.push(json)
+response.to_json
+
+
+end
+
+
+
+
 
 
 delete "/authors/:id" do
@@ -158,3 +190,5 @@ delete "/authors/:id" do
 
 	response.to_json
 end
+
+
