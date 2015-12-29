@@ -12,6 +12,7 @@ con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
   set :port, 9494
+  #set :port, 80 
 end
 
 before do
