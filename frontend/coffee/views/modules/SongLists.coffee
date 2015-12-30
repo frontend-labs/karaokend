@@ -6,7 +6,7 @@ define(['backbone',
 
 	# Creamos la vista principal que contendrá nuestras vistas hijas
 	SongLists = Backbone.View.extend({
-		el: '.list',
+		el: 'body',
 		collection: null,
 		dom: {},
 		catchDom: () ->
