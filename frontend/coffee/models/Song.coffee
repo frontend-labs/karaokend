@@ -3,7 +3,6 @@ define(['backbone'], (Backbone) ->
 	Song = Backbone.Model.extend({
 		# Defino los atributos por defecto del modelo
 		defaults : {
-			id            : 0
 			id_provider   : 1
 			title         : 'jon doe video'
 			url           : ''
