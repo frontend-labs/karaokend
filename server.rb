@@ -102,6 +102,7 @@ put "/songs/:id" do
 		votes = '0'
 
 		bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+		puts bodyQuery
 		rs = con.query(bodyQuery)
 		puts con.affected_rows
 		if con.affected_rows > 0
