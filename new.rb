@@ -11,8 +11,10 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-  set :port, 9494
-  #set :port, 80 
+  set :port, 8000
+  set :bind, 'karaokend.frontendlabs.io'
+  set :public_folder, '/var/www/karaokend.frontendlabs.io/'
+  #set :port, 80
 end
 
 before do
@@ -60,7 +62,7 @@ get '/songs' do
 		newArray.push(newRow)
 	}
 
-		
+
 
 
 	newArray.to_json
@@ -99,10 +101,10 @@ put "/songs/:id" do
 	#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
 
     	rs = con.query(query)
-		
+
 	puts con.affected_rows
 
-	if con.affected_rows > 0  
+	if con.affected_rows > 0
 		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
 	else
 		json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
@@ -123,8 +125,8 @@ post '/songs' do
 query = ''
 setQuery = ''
 headQuery = ''
-bodyQuery = "" 
-response = [] 
+bodyQuery = ""
+response = []
 
 current_time = Time.now.getutc
 time = current_time.getlocal("-05:00")
@@ -145,7 +147,7 @@ bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, vot
 rs = con.query(bodyQuery)
 puts con.affected_rows
 
-if con.affected_rows > 0  
+if con.affected_rows > 0
 	json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
 else
 	json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
@@ -174,7 +176,7 @@ delete "/songs/:id" do
 	puts con.affected_rows
 
 
-	if con.affected_rows > 0  
+	if con.affected_rows > 0
 		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Eliminado correctamente", :status => "1"}
 	else
 		json = {:data => {}, "msg" => "El registro no fue eliminado", :status => "0"}
