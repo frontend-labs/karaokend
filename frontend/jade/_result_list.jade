@@ -1,14 +1,22 @@
 - classTablePrefix = "mdl-data-table" 
-table(class="#{classTablePrefix} mdl-js-data-table #{classTablePrefix}--selectable")
+table#result_list(class="#{classTablePrefix}")
   thead
     tr
-      th(class="#{classTablePrefix}--non-numeric") Preview
-      th SongName
+      th
+        label(class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect #{classTablePrefix}__select", for="table-header")
+          input(type="checkbox", id="table-header", class="mdl-checkbox__input")
+      th(class="#{classTablePrefix}__cell--non-numeric") Preview
+      th(class="#{classTablePrefix}__cell--non-numeric") SongName
       th Duration
   tbody
-    tr
-      td(class="#{classTablePrefix}--non-numeric") image
-      td SongName its here!
-      td 0:00
 
-      
+script(id="tplSong", type='text/template')
+  - classTablePrefix = "mdl-data-table" 
+  tr
+      td
+          label(class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect #{classTablePrefix}__select")
+              input(type="checkbox", id="row[ {{id}} ]" class="mdl-checkbox__input")
+      td(class="#{classTablePrefix}__cell--non-numeric")
+          img(src="{{thumbnail}}", alt="{{title}}")
+      td(class="#{classTablePrefix}__cell--non-numeric") {{title}}
+      td 0:00

@@ -4,7 +4,6 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		# Creamos la vista hija "galleryRow" para cada autor
 		model : null,
 		collection: null,
-		tagName: "li",
 		events: {
 			"click .mdl-checkbox__input": "selectSong"
 		},
@@ -16,9 +15,8 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			return
 		initialize: () ->
 			_.bindAll(this, 'render', 'selectSong')
-
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "change" en el modelo y lanzamos la función "render" de la vista hija actual
-			this.listenTo(this.model, 'change', this.render)
+			this.listenTo(this.model, 'add', this.render)
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "destroy" en el modelo y lanzamos la función "remove" de la vista hija actual
 			this.listenTo(this.model, 'destroy', this.remove)
 			return
@@ -26,26 +24,13 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		render : () ->
 			compiled_template = _.template(this.template)
 			# Traemos los datos del modelo(this.model.toJSON()) a su vista(this.$el) correspondiente
-			this.$el.html(compiled_template(this.model.toJSON()))
+			this.setElement(compiled_template(this.model.toJSON()))
 			# Retornamos this para poder usar el elemento generado
 			return this
 		,
 		selectSong: () ->
 			# Removemos el modelo seleccionado desde su colección correspondiente
 			# this.collection.remove(this.model)
-			return
-		,
-		editAuthor: () ->
-			this.catchDom()
-			unless this.dom.txtName.hasClass('editable')
-				this.dom.txtName.addClass('editable')
-			return
-		,
-		updateAuthor: (evt) ->
-			if evt.keyCode is 13
-				this.catchDom()
-				this.model.setName(this.dom.txtName.val())
-				this.model.save()
 			return
 	})
 

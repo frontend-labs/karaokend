@@ -12,51 +12,11 @@ html
 
 	body
 		.box_center
-			h1 Galería
+			h1 Karaokend¡
 		.box_center
 			ul.authors.js
 				-//for indice in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 		.box_center
 			include _search.jade
 			include _result_list.jade
-			form(class="form_author", id="frmAuthor", target="_self")
-				.row
-					label id:
-					input(id="id", value="13")
-				.row
-					label name:
-					input(id="name", value="trece")
-				.row
-					label photo:
-					input(id="photo", value="13.jpg")
-				.row
-					label twitter:
-					input(id="twitter", value="@13")
-				.row
-					label url:
-					input(id="url", value="http://13.com")
-				.row
-					label &nbsp;
-					input(type="button", id="btnSubmit", value="Add")
-
-		script(id="tplAuthor", type='text/template')
-			a(href="{{url}}", title="{{name}}", target="_blank")
-				img(border="0", src="http://localhost:9494/static/img/{{photo}}", alt="{{name}}")
-			.data
-				input(type="text", placeholder="{{name}}", value="{{name}}")
-			.options
-				a.remove(href="javascript:;", title="Eliminar")
-					img(border="0", src="static/img/remove.png", alt="{{name}}")
-			.tooltip
-				span.name {{name}}
-				span.twitter {{twitter}}
-				a(href="{{url}}", title="{{name}}") {{url}}
-
-		script(id="tplSong", type='text/template')
-			- classTablePrefix = "mdl-data-table" 
-			tr
-				td(class="#{classTablePrefix}--non-numeric") image
-				td SongName its here!
-				td 0:00
-
 		script(data-main="static/js/main", src="static/js/libs/requirejs/require.js", type="text/javascript")
