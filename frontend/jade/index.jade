@@ -12,18 +12,37 @@ html
 		link(type="text/css", href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
 
 	body
-		.box_center
-			h1
-				i.material-icons.custom_icon
-					| &#xE029;
-				|¡Karaokend!
-			a(href="list.html") list
+		.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+			header.mdl-layout__header
+				.mdl-layout__header-row
+					// Title
+					span.mdl-layout-title ¡Karaokend!
+					// Add spacer, to align navigation to the right
+					.mdl-layout-spacer
+					// Navigation. We hide it in small screens.
 
-		.box_center
-			ul.authors.js
-				-//for indice in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+					button#demo-menu-lower-right.mdl-button.mdl-js-button.mdl-button--icon
+						i.material-icons more_vert
+					ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(for='demo-menu-lower-right')
+						li.mdl-menu__item
+							a(href="list.html") Lista
 
-		.box_center
-			include _search.jade
-			include _result_list.jade
+			.mdl-layout__drawer
+				span.mdl-layout-title Title
+				nav.mdl-navigation
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+
+			main.mdl-layout__content
+				.page-content
+
+					.box_center
+						ul.authors.js
+							-//for indice in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+					.box_center
+						include _search.jade
+						include _result_list.jade
 		script(data-main="static/js/main", src="static/js/libs/requirejs/require.js", type="text/javascript")

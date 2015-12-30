@@ -12,15 +12,34 @@ html
 		link(type="text/css", href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
 
 	body
-		.box_center
-			h1.title-karaokend
-				i.material-icons.custom_icon
-					| &#xE029;
-				|¡Karaokend!
-			a(href="index.html") volver
+		.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+			header.mdl-layout__header
+				.mdl-layout__header-row
+					// Title
+					span.mdl-layout-title ¡Karaokend!
+					// Add spacer, to align navigation to the right
+					.mdl-layout-spacer
+					// Navigation. We hide it in small screens.
 
-		.box_center
-			ul.list.js
+					button#demo-menu-lower-right.mdl-button.mdl-js-button.mdl-button--icon
+						i.material-icons more_vert
+					ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(for='demo-menu-lower-right')
+						li.mdl-menu__item
+							a(href="index.html") volver
+
+			.mdl-layout__drawer
+				span.mdl-layout-title Title
+				nav.mdl-navigation
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+					a.mdl-navigation__link(href='') Link
+
+			main.mdl-layout__content
+				.page-content
+					// Your content goes here
+					ul.list.js
+
 
 
 		script(id="tplSong", type='text/template')
@@ -29,6 +48,8 @@ html
 				div.description
 					span {{title}}
 					span {{duration}}
+					button.mdl-button Eliminar
+
 
 
 

@@ -1,7 +1,7 @@
 
-#domain = 'http://localhost'
-domain = 'http://karaokend.frontendlabs.io'
-port = '9494'
+domain = 'http://localhost'
+#domain = 'http://karaokend.frontendlabs.io'
+port = '8000'
 
 
 require.config({
