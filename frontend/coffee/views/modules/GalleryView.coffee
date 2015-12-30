@@ -40,9 +40,7 @@ define(['backbone',
 			return
 		,
 		cleanResults: () ->
-			this.collection.each(( itemModel )->
-				itemModel.destroy()
-			)
+			this.collection.reset()
 			this.$el.find("tbody").html("")
 			return
 		,
@@ -51,7 +49,6 @@ define(['backbone',
 				id_provider: songFounded.id_provider
 				title: songFounded.title
 				hash: songFounded.hash
-				duration: songFounded.duration
 				votes: songFounded.votes
 				thumbnail: songFounded.thumbnail
 			}
@@ -67,10 +64,9 @@ define(['backbone',
 			console.log "list", list
 			list.map (item)->
 				that.newSongFounded({
-					id_provider: "youtube"
+					id_provider: 1
 					title: item.snippet.title
 					hash: item.id.videoId
-					duration: ""
 					votes: 0
 					thumbnail: getThumbnail(item.snippet.thumbnails.medium.url, item.snippet.thumbnails.default.url)
 				})
