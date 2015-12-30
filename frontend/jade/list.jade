@@ -10,6 +10,7 @@ html
 		link(type="text/css", href="static/js/libs/material-design-lite/material.min.css", rel="stylesheet")
 		script(src="static/js/libs/material-design-lite/material.min.js", type="text/javascript")
 		link(type="text/css", href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+		link(type="text/css", href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet")
 
 	body
 		.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
@@ -42,7 +43,7 @@ html
 
 
 
-		script(id="tplSong", type='text/template')
+		script(id="tplSongRow", type='text/template')
 			a(href="{{url}}", title="{{title}}", target="_blank")
 				img(border="0", src="{{preview}}", alt="{{title}}")
 				div.description
