@@ -53,9 +53,10 @@ get '/songs' do
 	rs.each_hash { |row|
 		newRow = {
 			"id" => "#{row['id']}",
-			"title" => "#{row['title'].force_encoding("UTF-8")}",
-			"url"=> "#{row['url'].force_encoding("UTF-8")}",
-			"preview"=> "#{row['preview']}",
+
+			"title" => "#{row['title'].force_encoding("ISO-8859-1").encode("UTF-8")}",
+			"url"=> "#{row['url'].force_encoding("ISO-8859-1").encode("UTF-8")}",
+			"preview"=> "#{row['preview'].force_encoding("ISO-8859-1").encode("UTF-8")}",
 			"duration"=> "#{row['duration']}",
 			"votes"=> "#{row['votes']}",
 			"date"=> "#{row['date']}"
