@@ -74,6 +74,10 @@ end
 
 put "/songs/:id" do
 
+
+	request.body.rewind
+	request_payload = JSON.parse request.body.read
+
 	flag = true
 	newRow = {}
 	id = 0
@@ -88,21 +92,32 @@ put "/songs/:id" do
 	bodyQuery = ""
 
 	id = "#{params[:id]}".to_s
-	# puts "#{params[:id]}"
+	puts "id: "
+	puts "#{params[:id]}"
+
 
 	if id.to_s == "0"
 		current_time = Time.now.getutc
 		time = current_time.getlocal("-05:00")
 
-		id_provider = "#{params[:id_provider]}"
-		title = "#{params[:title]}"
-		hash = "#{params[:hash]}"
-		duration = "#{params[:duration]}"
+		id_provider = request_payload['id_provider'].to_s
+		title = request_payload['title']
+		hash = request_payload['hash'] 
+		duration = request_payload['duration'] 
 		date = time.to_s.slice(0, time.to_s.length - 6)
 		votes = '0'
 
+		puts id_provider
+		puts title
+		puts hash
+		puts duration
+		
+		puts " - - - - - - - -"
+
 		bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+		puts "_ _ _ xx _ _ _ _"
 		puts bodyQuery
+		puts "_ _ _ xx _ _ _ _"
 		rs = con.query(bodyQuery)
 		puts con.affected_rows
 		if con.affected_rows > 0
