@@ -3,6 +3,8 @@
 domain = 'http://karaokend.frontendlabs.io'
 port = '9494'
 
+loc = window.location.href.split("/")
+current_page = loc[loc.length -1]
 
 require.config({
 	baseUrl: 'static/js/',
@@ -32,8 +34,10 @@ require(['jquery', 'underscore', 'backbone', 'text'], ($, _, Backbone, text) ->
 	require(['static/js/views/modules/GalleryView.js', 'static/js/views/modules/SongLists.js'],
 		(GalleryView, SongLists) ->
 			#Creamos una instancia de nuestra galería principal
-			new GalleryView()
-			new SongLists()
+			if current_page is "index.html"
+				new GalleryView()
+			else
+				new SongLists()
 			return
 	)
 	return
