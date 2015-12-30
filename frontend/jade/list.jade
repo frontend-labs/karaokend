@@ -17,14 +17,17 @@ html
 				i.material-icons.custom_icon
 					| &#xE029;
 				|¡Karaokend!
-			a(href="list.html")
-				list
+			a(href="index.html")
+				volver
 
 		.box_center
-			ul.authors.js
-				-//for indice in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+			ul.list.js
 
-		.box_center
-			include _search.jade
-			include _result_list.jade
+
+		script(id="tplSong", type='text/template')
+			a(href="{{url}}", title="{{title}}", target="_blank")
+				img(border="0", src="{{preview}}", alt="{{title}}")
+
+
+
 		script(data-main="static/js/main", src="static/js/libs/requirejs/require.js", type="text/javascript")
