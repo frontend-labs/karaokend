@@ -2,7 +2,7 @@ define(['backbone',
 		'underscore',
 		'views/modules/childrens/SongRow',
 		'models/collections/Songs'
-		], (Backbone, _, songRow, Songs) ->
+		], (Backbone, _, SongRow, Songs) ->
 
 	# Creamos la vista principal que contendrá nuestras vistas hijas
 	SongLists = Backbone.View.extend({
@@ -33,7 +33,7 @@ define(['backbone',
 		# Función "addSong" para adicionar la cancion
 		addSong: (modelo) ->
 			# Aqui renderizo la vista principal, la cargo con datos si deseo, en este caso no la necesito
-			view = new songRow({model: modelo, collection: this.collection})
+			view = new SongRow({model: modelo, collection: this.collection})
 			this.$el.find(".list").append(view.render().el)
 
 			return

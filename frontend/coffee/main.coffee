@@ -22,10 +22,11 @@ require(['jquery', 'underscore', 'backbone', 'text'], ($, _, Backbone, text) ->
 
 	_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g }
 
-	require(['static/js/views/modules/GalleryView.js'],
-		(GalleryView) ->
+	require(['static/js/views/modules/GalleryView.js', 'static/js/views/modules/SongLists.js'],
+		(GalleryView, SongLists) ->
 			#Creamos una instancia de nuestra galería principal
 			new GalleryView()
+			new SongLists()
 			return
 	)
 	return
