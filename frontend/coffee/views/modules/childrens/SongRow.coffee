@@ -6,7 +6,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		model : null,
 		collection: null,
 		events: {
-			"click .mdl-checkbox__input": "selectSong"
+			"click .remove": "removeSong"
 		},
 		template : $('#tplSong').html(),
 		dom: {},
@@ -15,7 +15,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			#console.log('catchDom')
 			return
 		initialize: () ->
-			_.bindAll(this, 'render', 'selectSong')
+			_.bindAll(this, 'render', 'removeSong')
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "change" en el modelo y lanzamos la función "render" de la vista hija actual
 			this.listenTo(this.model, 'add', this.render)
 			# Nos podemos a escuchar desde la vista hija actual cuando ocurra un evento "destroy" en el modelo y lanzamos la función "remove" de la vista hija actual
@@ -29,9 +29,9 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			# Retornamos this para poder usar el elemento generado
 			return this
 		,
-		selectSong: () ->
+		removeSong: () ->
 			# Removemos el modelo seleccionado desde su colección correspondiente
-			# this.collection.remove(this.model)
+			this.collection.remove(this.model)
 			return
 	})
 

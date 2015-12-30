@@ -14,7 +14,7 @@ define(['backbone',
 		,
 		initialize: () ->
 			# _.bindAll(this) hace que las funciones apunten siempre al "this" del objeto principal
-			_.bindAll(this, 'render', 'newSongFounded')
+			_.bindAll(this, 'render')
 			# Asignamos a la variable "collection" una instancia de nuestra Colección
 			this.collection = new Songs()
 			this.collection.fetch()
