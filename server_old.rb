@@ -11,11 +11,12 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-  set :port, 9494
-  # set :bind, 'localhost'
-  # set :public_folder, 'public/'
+  set :port, 9494 
   set :bind, 'karaokend.frontendlabs.io'
+  #set :port, 8000 
+  #set :bind, 'localhost'
   set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
+  #set :public_folder, 'public/'
 end
 
 before do
@@ -53,10 +54,9 @@ get '/songs' do
 	rs.each_hash { |row|
 		newRow = {
 			"id" => "#{row['id']}",
-
-			"title" => "#{row['title'].force_encoding("ISO-8859-1").encode("UTF-8")}",
-			"url"=> "#{row['url'].force_encoding("ISO-8859-1").encode("UTF-8")}",
-			"preview"=> "#{row['preview'].force_encoding("ISO-8859-1").encode("UTF-8")}",
+			"title" => "#{row['title'].force_encoding("UTF-8")}",
+			"url"=> "#{row['url'].force_encoding("UTF-8")}",
+			"preview"=> "#{row['preview']}",
 			"duration"=> "#{row['duration']}",
 			"votes"=> "#{row['votes']}",
 			"date"=> "#{row['date']}"
@@ -73,6 +73,7 @@ end
 
 
 put "/songs/:id" do
+	
 
 	flag = true
 	newRow = {}
@@ -84,60 +85,38 @@ put "/songs/:id" do
 	response = []
 	json = {}
 
-	headQuery = ''
-	bodyQuery = ""
+	id = "#{params[:id]}"
+	whereQuery = whereQuery + id
 
-	id = "#{params[:id]}".to_s
-	# puts "#{params[:id]}"
-
-	if id.to_s == "0"
-		current_time = Time.now.getutc
-		time = current_time.getlocal("-05:00")
-
-		id_provider = "#{params[:id_provider]}"
-		title = "#{params[:title]}"
-		hash = "#{params[:hash]}"
-		duration = "#{params[:duration]}"
-		date = time.to_s.slice(0, time.to_s.length - 6)
-		votes = '0'
-
-		bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
-		rs = con.query(bodyQuery)
-		puts con.affected_rows
-		if con.affected_rows > 0
-			json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
+	params.each do |k, v|
+		case k
+		when "splat", "captures"
+			break
 		else
-			json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
+			setQuery = setQuery + k + "= '"  + v + "', "
+			puts "#{k}: #{v}"
 		end
-		response.push(json)
-		response.to_json
-
-		#puts bodyQuery
-		#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
-	else
-		whereQuery = whereQuery + id
-		params.each do |k, v|
-			case k
-			when "splat", "captures"
-				break
-			else
-				setQuery = setQuery + k + "= '"  + v + "', "
-				puts "#{k}: #{v}"
-			end
-		end
-		query = mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
-		rs = con.query(query)
-		puts con.affected_rows
-		if con.affected_rows > 0
-			json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
-		else
-			json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
-		end
-		response.push(json)
-		response.to_json
-
-		#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
 	end
+
+	query = mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
+
+
+	#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
+
+    	rs = con.query(query)
+
+	puts con.affected_rows
+
+	if con.affected_rows > 0
+		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
+	else
+		json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
+	end
+
+	response.push(json)
+	response.to_json
+
+
 end
 
 
@@ -163,18 +142,22 @@ date = time.to_s.slice(0, time.to_s.length - 6)
 votes = '0'
 
 bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+
+#puts bodyQuery
+#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
+
+
 rs = con.query(bodyQuery)
 puts con.affected_rows
+
 if con.affected_rows > 0
 	json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
 else
 	json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
 end
+
 response.push(json)
 response.to_json
-
-#puts bodyQuery
-#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
 
 
 end
