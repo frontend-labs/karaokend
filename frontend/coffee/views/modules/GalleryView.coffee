@@ -52,7 +52,6 @@ define(['backbone',
 				votes: songFounded.votes
 				thumbnail: songFounded.thumbnail
 			}
-			console.log("adding", songFounded)
 			this.collection.create(songData)
 			return
 		,
@@ -61,7 +60,6 @@ define(['backbone',
 			getThumbnail = (path, alternativePath)->
 				return  if path then path else alternativePath
 
-			console.log "list", list
 			list.map (item)->
 				that.newSongFounded({
 					id_provider: 1

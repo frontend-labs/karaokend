@@ -18,13 +18,13 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			compiled_template = _.template(this.template)
 			# Traemos los datos del modelo(this.model.toJSON()) a su vista(this.$el) correspondiente
 			this.setElement(compiled_template(this.model.toJSON()))
-			console.log "render!"
 			# Retornamos this para poder usar el elemento generado
 			return this
 		,
 		selectSong: () ->
 			data = this.model.toJSON()
 			data.id = 0
+			console.log "saving", data
 			this.collection.create(data)
 			return
 	})
