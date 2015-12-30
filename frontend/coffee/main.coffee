@@ -4,7 +4,8 @@ domain = 'http://karaokend.frontendlabs.io'
 port = '9494'
 
 loc = window.location.href.split("/")
-current_page = loc[loc.length -1]
+items = loc.length
+current_page = loc[items-1]
 
 require.config({
 	baseUrl: 'static/js/',
