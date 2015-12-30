@@ -18,6 +18,10 @@ require.config({
 	}
 })
 
+domain = 'http://localhost'
+port = '9494'
+
+
 require(['jquery', 'underscore', 'backbone', 'text'], ($, _, Backbone, text) ->
 
 	_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g }
