@@ -12,8 +12,8 @@ con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
   set :port, 9494
-  set :bind, 'karaokend.frontendlabs.io'
   #set :bind, 'localhost'
+  set :bind, 'karaokend.frontendlabs.io'
   set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
   #set :public_folder, 'public/'
 end
@@ -84,7 +84,13 @@ put "/songs/:id" do
 	response = []
 	json = {}
 
-	id = "#{params[:id]}"
+	id = "#{params[:id]}".to_s
+	# puts "#{params[:id]}"
+
+	if id.to_s == "0"
+		puts "el id es cero no joas ps"
+	end
+
 	whereQuery = whereQuery + id
 
 	params.each do |k, v|
