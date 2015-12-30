@@ -29,11 +29,14 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			# Retornamos this para poder usar el elemento generado
 			return this
 		,
-		removeSong: () ->
+		removeSong: (evt) ->
 			# Removemos el modelo seleccionado desde su colección correspondiente
+			evt.stopPropagation()
+			evt.preventDefault()
+			evt.stopImmediatePropagation()
 			console.log 'elimino este modelo'
 			this.collection.remove(this.model)
-			return
+			return false
 	})
 
 	return SongRow
