@@ -1,6 +1,6 @@
 
 #domain = 'http://localhost'
-domain = 'karaokend.frontendlabs.io'
+domain = 'http://karaokend.frontendlabs.io'
 port = '9494'
 
 
