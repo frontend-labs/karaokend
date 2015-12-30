@@ -31,6 +31,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		,
 		removeSong: () ->
 			# Removemos el modelo seleccionado desde su colección correspondiente
+			console.log 'elimino este modelo'
 			this.collection.remove(this.model)
 			return
 	})
