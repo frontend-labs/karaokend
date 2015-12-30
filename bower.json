@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "material-design-lite": "~1.0.6",
-    "backbone.localStorage": "~1.1.16"
+    "backbone.localStorage": "~1.1.16",
+    "rupture-by-jenius": "~0.6.1"
   }
 }
