@@ -4,6 +4,8 @@ define(['backbone', 'localstorage', 'models/Song'], (Backbone, LocalStorage, Son
 	FoundedSongs = Backbone.Collection.extend({
         model: Song,
         localStorage: new LocalStorage('founded-songs'),
+        selected: ->
+            return this.where({selected: true})
 	})
 
 	return FoundedSongs

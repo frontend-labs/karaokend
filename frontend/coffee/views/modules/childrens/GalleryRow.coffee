@@ -29,9 +29,12 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			return this
 		,
 		selectSong: () ->
+			data = this.model.toJSON()
 			# Removemos el modelo seleccionado desde su colección correspondiente
 			# this.collection.remove(this.model)
-			console.log "model selected!", this
+			console.log("creating...:D", data)
+			console.log("creating...:D", this.collection)
+			this.collection.create(this.model)
 			return
 	})
 

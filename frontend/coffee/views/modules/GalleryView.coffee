@@ -3,7 +3,8 @@ define(['backbone',
 		'views/modules/childrens/GalleryRow',
 		'models/collections/YTSongs'
 		'models/collections/foundedSongs'
-		], (Backbone, _, galleryRow, YTSongs, FoundedSongs) ->
+		'models/collections/Songs'
+		], (Backbone, _, galleryRow, YTSongs, FoundedSongs, Songs) ->
 
 	# Creamos la vista principal que contendrá nuestras vistas hijas
 	GalleryView = Backbone.View.extend({
@@ -19,6 +20,7 @@ define(['backbone',
 			_.bindAll(this, 'render', 'newSongFounded')
 			# Asignamos a la variable "collection" una instancia de nuestra Colección
 			this.collection = new FoundedSongs()
+			this.collectionSong = new Songs()
 			# Ejecutamos la funcion 'addSong' cuando escuchamos el evento 'add' en la colección
 			this.listenTo(this.collection, 'add', this.addSong)
 			this.catchDom()
@@ -32,7 +34,7 @@ define(['backbone',
 		# Función "addSong" para adicionar la cancion
 		addSong: (modelo) ->
 			# Aqui renderizo la vista principal, la cargo con datos si deseo, en este caso no la necesito
-			view = new galleryRow({model: modelo, collection: this.collection})
+			view = new galleryRow({model: modelo, collection: this.collectionSong})
 			this.$el.find("tbody").append(view.render().el)
 			componentHandler.upgradeDom()
 			return
