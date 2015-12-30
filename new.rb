@@ -13,7 +13,7 @@ con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 configure do
   set :port, 8000
   set :bind, 'karaokend.frontendlabs.io'
-  set :public_folder, '/var/www/karaokend.frontendlabs.io/'
+  set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
   #set :port, 80
 end
 
