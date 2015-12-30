@@ -11,10 +11,10 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-  set :port, 8000
-  set :bind, 'karaokend.frontendlabs.io'
-  set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
-  #set :port, 80
+  set :port, 9494
+  # set :port, 8000
+  # set :bind, 'karaokend.frontendlabs.io'
+  # set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
 end
 
 before do
@@ -53,7 +53,7 @@ get '/songs' do
 		newRow = {
 			"id" => "#{row['id']}",
 			"title" => "#{row['title'].force_encoding("UTF-8")}",
-			"url"=> "#{row['url']}",
+			"url"=> "#{row['url'].force_encoding("UTF-8")}",
 			"preview"=> "#{row['preview']}",
 			"duration"=> "#{row['duration']}",
 			"votes"=> "#{row['votes']}",
@@ -62,7 +62,7 @@ get '/songs' do
 		newArray.push(newRow)
 	}
 
-
+	puts newArray
 
 
 	newArray.to_json
