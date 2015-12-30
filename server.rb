@@ -46,7 +46,7 @@ get '/songs' do
 						   s.votes
 						   FROM song AS s
 						   INNER JOIN provider AS p
-						   WHERE s.id_provider = p.id")
+						   WHERE s.id_provider = p.id ORDER BY s.date DESC")
 
     n_rows = rs.num_rows
 
