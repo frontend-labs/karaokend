@@ -1,7 +1,7 @@
 
-domain = 'http://localhost'
-#domain = 'http://karaokend.frontendlabs.io'
-port = '8000'
+#domain = 'http://localhost'
+domain = 'http://karaokend.frontendlabs.io'
+port = '9494'
 
 loc = window.location.href.split("/")
 items = loc.length
