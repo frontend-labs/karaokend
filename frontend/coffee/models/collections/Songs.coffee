@@ -4,7 +4,7 @@ define(['backbone', 'models/Song'], (Backbone, Song) ->
 	Songs = Backbone.Collection.extend({
 		model: Song,
 		url: () ->
-			return 'http://karaokend.frontendlabs.io:8000/songs'
+			return 'http://localhost:9494/songs'
 	})
 
 	return Songs

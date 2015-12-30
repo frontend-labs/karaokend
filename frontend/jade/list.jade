@@ -2,7 +2,7 @@ doctype html
 html
 	head
 		meta(charset="utf8")
-		meta(viewport="width=device-width,initial-scale=1")
+		meta(name="viewport" content="initial-scale=1")
 		title ¡Karaokend!
 		link(type="text/css", href="static/css/layouts/main/layout.css", rel="stylesheet")
 		link(type="text/css", href="static/css/modules/all/all.css", rel="stylesheet")
@@ -13,7 +13,7 @@ html
 
 	body
 		.box_center
-			h1
+			h1.title-karaokend
 				i.material-icons.custom_icon
 					| &#xE029;
 				|¡Karaokend!
@@ -26,6 +26,7 @@ html
 		script(id="tplSong", type='text/template')
 			a(href="{{url}}", title="{{title}}", target="_blank")
 				img(border="0", src="{{preview}}", alt="{{title}}")
+				span.description {{title}} - {{duration}}
 
 
 

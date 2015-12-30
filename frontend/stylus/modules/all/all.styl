@@ -13,10 +13,11 @@ html
 		font-size 12px
 body
 	font-family $family1
-	background $colorBg
+	//background $colorBg
 	margin 0
 	padding 0
 	-webkit-text-size-adjust 100%
+	background white !important
 hr
 	margin 1.5em 0
 	text-align center
@@ -156,10 +157,54 @@ form.form_author
 			padding 12px 18px 12px
 			vertical-align middle
 
-+mobile()
+.list.js
+		overflow auto
+		a
+			border-top 1px solid #ccc
+			padding 10px 0
+			overflow auto
+			display block
+			.description
+				margin-left 10px
+				color #444
+				float left
+				width 180px
+				font-size 14px
+				text-transform lowercase
+			img
+				float left
+				width 120px
+				border 1px solid #ccc
+	.title-karaokend
+		font-size 20px !important
 	.mdl-js
 		.mdl-data-table
 			td
 				padding 12px 8px
 		img
 			max-width inherit
+/*
++mobile()
+	.list.js
+		overflow auto
+		a
+			overflow auto
+			display block
+			.description
+				float left
+				width 200px
+				font-size 14px
+				text-transform lowercase
+			img
+				float left
+				width 120px
+				border 1px solid #ccc
+	.title-karaokend
+		font-size 20px !important
+	.mdl-js
+		.mdl-data-table
+			td
+				padding 12px 8px
+		img
+			max-width inherit
+*/
