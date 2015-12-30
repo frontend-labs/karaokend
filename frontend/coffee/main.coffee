@@ -1,3 +1,9 @@
+
+#domain = 'http://localhost'
+domain = 'karaokend.frontendlabs.io'
+port = '9494'
+
+
 require.config({
 	baseUrl: 'static/js/',
 	paths: {
@@ -17,9 +23,6 @@ require.config({
 		}
 	}
 })
-
-domain = 'http://localhost'
-port = '9494'
 
 
 require(['jquery', 'underscore', 'backbone', 'text'], ($, _, Backbone, text) ->
