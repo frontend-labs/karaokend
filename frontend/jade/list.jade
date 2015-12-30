@@ -26,7 +26,9 @@ html
 		script(id="tplSong", type='text/template')
 			a(href="{{url}}", title="{{title}}", target="_blank")
 				img(border="0", src="{{preview}}", alt="{{title}}")
-				span.description {{title}} - {{duration}}
+				div.description
+					span {{title}}
+					span {{duration}}
 
 
 
