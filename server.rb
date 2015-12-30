@@ -11,17 +11,11 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-<<<<<<< HEAD:server.rb
   set :port, 9494
-  # set :port, 8000
-  # set :bind, 'karaokend.frontendlabs.io'
-  # set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
-=======
-  set :port, 9494 
-  #set :bind, 'ihttp://localhost'
-  set :public_folder, 'public/'
-  #set :port, 80
->>>>>>> ef5aa85d7b3eae7f83b7511f1a517843bd159615:new.rb
+  set :bind, 'karaokend.frontendlabs.io'
+  #set :bind, 'localhost'
+  set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
+  #set :public_folder, 'public/'
 end
 
 before do
