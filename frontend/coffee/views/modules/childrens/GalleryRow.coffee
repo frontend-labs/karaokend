@@ -34,7 +34,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 			# this.collection.remove(this.model)
 			console.log("creating...:D", data)
 			console.log("creating...:D", this.collection)
-			this.collection.create(this.model)
+			this.collection.create(data)
 			return
 	})
 

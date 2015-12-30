@@ -44,7 +44,6 @@ define(['backbone',
 			return
 		newSongFounded: (songFounded) ->
 			songData = {
-				id: songFounded.id
 				id_provider: songFounded.id_provider
 				title: songFounded.title
 				hash: songFounded.hash
@@ -62,7 +61,6 @@ define(['backbone',
 
 			list.map (item)->
 				that.newSongFounded({
-					id: item.id.videoId
 					id_provider: "youtube"
 					title: item.snippet.title
 					hash: item.id.videoId
