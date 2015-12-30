@@ -50,6 +50,7 @@ define(['backbone',
 				title: songFounded.title
 				hash: songFounded.hash
 				votes: songFounded.votes
+				duration: songFounded.duration
 				thumbnail: songFounded.thumbnail
 			}
 			this.collection.create(songData)
@@ -57,8 +58,25 @@ define(['backbone',
 		,
 		dealFoundedSongs: (list) ->
 			that = @
-			getThumbnail = (path, alternativePath)->
-				return  if path then path else alternativePath
+
+			fn = {
+				getThumbnail = (path, alternativePath)->
+					return  if path then path else alternativePath
+
+				formatDuration : (duration)->
+					match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
+					r = []
+					if match[1]
+						r.push parseInt(match[1])
+
+					r.push((parseInt(match[2]) || 0))
+					r.push(fn.zeroAdd((parseInt(match[3]) || 0)))
+
+					return r.join(':')
+
+				zeroAdd: (n)->
+					return if n<10 then "0#{n}" else n
+			}
 
 			list.map (item)->
 				that.newSongFounded({
@@ -66,7 +84,8 @@ define(['backbone',
 					title: item.snippet.title
 					hash: item.id.videoId
 					votes: 0
-					thumbnail: getThumbnail(item.snippet.thumbnails.medium.url, item.snippet.thumbnails.default.url)
+					thumbnail: fn.getThumbnail(item.snippet.thumbnails.medium.url, item.snippet.thumbnails.default.url)
+					duration: fn.formatDuration(item.contentDetails.duration)
 				})
 				return
 		,
