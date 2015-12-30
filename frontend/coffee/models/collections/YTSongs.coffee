@@ -5,7 +5,7 @@ define(['backbone'], (Backbone) ->
 	# Creamos una colección de Youtube Song's
 	YTSongs = Backbone.Collection.extend({
 		url: () ->
-			feedUrl = "https://www.googleapis.com/youtube/v3/search/?part=snippet,contentDetails&type=video&key=#{key}"
+			feedUrl = "https://www.googleapis.com/youtube/v3/search/?part=snippet&type=video&key=#{key}"
 			return feedUrl
 	})
 
