@@ -33,7 +33,7 @@ require(['jquery', 'underscore', 'backbone', 'text'], ($, _, Backbone, text) ->
 		(GalleryView, SongLists) ->
 			#Creamos una instancia de nuestra galería principal
 			new GalleryView()
-			#new SongLists()
+			new SongLists()
 			return
 	)
 	return

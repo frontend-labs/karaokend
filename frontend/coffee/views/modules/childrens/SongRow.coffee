@@ -8,7 +8,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 		events: {
 			"click .remove": "removeSong"
 		},
-		template : $('#tplSong').html(),
+		template : $('#tplSongRow').html(),
 		dom: {},
 		catchDom: () ->
 			this.dom.txtName = this.$el.find('input')
