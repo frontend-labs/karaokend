@@ -2,6 +2,7 @@ define(['backbone', 'underscore'], (Backbone, _) ->
 
 	SongRow = Backbone.View.extend({
 		# Creamos la vista hija "galleryRow" para cada autor
+		tagName: 'li'
 		model : null,
 		collection: null,
 		events: {
