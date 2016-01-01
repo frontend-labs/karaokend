@@ -4,8 +4,6 @@ require 'json'
 require 'mysql'
 require 'yaml'
 
-class Karaokend < Sinatra::Base
-
 config = YAML.load_file('config/local.yml')
 mysql = config['mysql']
 
@@ -13,11 +11,11 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-  set :port, 9494
-  # set :bind, 'localhost'
-  # set :public_folder, 'public/'
-  set :bind, 'karaokend.frontendlabs.io'
-  set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
+	set :port, 9494
+	# set :bind, 'localhost'
+	# set :public_folder, 'public/'
+	set :bind, 'karaokend.frontendlabs.io'
+	set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
 end
 
 before do
@@ -26,31 +24,21 @@ before do
 			'Access-Control-Allow-Methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 			'Access-Control-Allow-Headers' => 'X-Requested-With, X-Prototype-Version',
 			'Access-Control-Max-Age' => '1728000'
-
 end
 
 
 get "/" do
-  redirect '/index.html'
+	redirect '/index.html'
 end
+
 
 # GET METHOD
 get '/songs' do
 	newArray = []
 	newRow= {}
 
-    rs = con.query("SELECT s.id,
-						   s.title,
-				           s.duration,
-				           REPLACE( p.url,  '__hash__', s.hash ) AS url,
-				           REPLACE( p.preview,  '__hash__', s.hash ) AS preview,
-				           s.date,
-						   s.votes
-						   FROM song AS s
-						   INNER JOIN provider AS p
-						   WHERE s.id_provider = p.id ORDER BY s.date DESC")
-
-    n_rows = rs.num_rows
+	rs = con.query("SELECT s.id, s.title, s.duration, REPLACE( p.url,  '__hash__', s.hash ) AS url, REPLACE( p.preview,  '__hash__', s.hash ) AS preview, s.date, s.votes FROM song AS s INNER JOIN provider AS p WHERE s.id_provider = p.id ORDER BY s.date DESC")
+	n_rows = rs.num_rows
 
 	rs.each_hash { |row|
 		newRow = {
@@ -67,15 +55,12 @@ get '/songs' do
 	}
 
 	puts newArray
-
-
 	newArray.to_json
 
 end
 
 
 put "/songs/:id" do
-
 
 	request.body.rewind
 	request_payload = JSON.parse request.body.read
@@ -159,9 +144,6 @@ put "/songs/:id" do
 end
 
 
-
-
-
 post '/songs' do
 
 query = ''
@@ -194,9 +176,7 @@ response.to_json
 #puts bodyQuery
 #curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
 
-
 end
-
 
 
 delete "/songs/:id" do
@@ -210,9 +190,7 @@ delete "/songs/:id" do
 	query = "DELETE FROM song WHERE id = " + id
 
 	rs = con.query(query)
-
 	puts con.affected_rows
-
 
 	if con.affected_rows > 0
 		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Eliminado correctamente", :status => "1"}
@@ -224,7 +202,3 @@ delete "/songs/:id" do
 	response.to_json
 
 end
-
-
-end
-
