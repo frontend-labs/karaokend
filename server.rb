@@ -4,6 +4,8 @@ require 'json'
 require 'mysql'
 require 'yaml'
 
+class Karaokend < Sinatra::Base
+
 config = YAML.load_file('config/local.yml')
 mysql = config['mysql']
 
@@ -223,4 +225,6 @@ delete "/songs/:id" do
 
 end
 
+
+end
 

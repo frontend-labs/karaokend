@@ -11,12 +11,11 @@ mysql = config['mysql']
 con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
-  set :port, 9494 
+  set :port, 9494
+  # set :bind, 'localhost'
+  # set :public_folder, 'public/'
   set :bind, 'karaokend.frontendlabs.io'
-  #set :port, 8000 
-  #set :bind, 'localhost'
   set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
-  #set :public_folder, 'public/'
 end
 
 before do
@@ -47,16 +46,17 @@ get '/songs' do
 						   s.votes
 						   FROM song AS s
 						   INNER JOIN provider AS p
-						   WHERE s.id_provider = p.id")
+						   WHERE s.id_provider = p.id ORDER BY s.date DESC")
 
     n_rows = rs.num_rows
 
 	rs.each_hash { |row|
 		newRow = {
 			"id" => "#{row['id']}",
-			"title" => "#{row['title'].force_encoding("UTF-8")}",
-			"url"=> "#{row['url'].force_encoding("UTF-8")}",
-			"preview"=> "#{row['preview']}",
+
+			"title" => "#{row['title'].force_encoding("ISO-8859-1").encode("UTF-8")}",
+			"url"=> "#{row['url'].force_encoding("ISO-8859-1").encode("UTF-8")}",
+			"preview"=> "#{row['preview'].force_encoding("ISO-8859-1").encode("UTF-8")}",
 			"duration"=> "#{row['duration']}",
 			"votes"=> "#{row['votes']}",
 			"date"=> "#{row['date']}"
@@ -73,7 +73,10 @@ end
 
 
 put "/songs/:id" do
-	
+
+
+	request.body.rewind
+	request_payload = JSON.parse request.body.read
 
 	flag = true
 	newRow = {}
@@ -85,38 +88,72 @@ put "/songs/:id" do
 	response = []
 	json = {}
 
-	id = "#{params[:id]}"
-	whereQuery = whereQuery + id
+	headQuery = ''
+	bodyQuery = ""
 
-	params.each do |k, v|
-		case k
-		when "splat", "captures"
-			break
+	id = "#{params[:id]}".to_s
+	puts "id: "
+	puts "#{params[:id]}"
+
+
+	if id.to_s == "0"
+		current_time = Time.now.getutc
+		time = current_time.getlocal("-05:00")
+
+		id_provider = request_payload['id_provider'].to_s
+		title = request_payload['title']
+		hash = request_payload['hash'] 
+		duration = request_payload['duration'] 
+		date = time.to_s.slice(0, time.to_s.length - 6)
+		votes = '0'
+
+		puts id_provider
+		puts title
+		puts hash
+		puts duration
+		
+		puts " - - - - - - - -"
+
+		bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+		puts "_ _ _ xx _ _ _ _"
+		puts bodyQuery
+		puts "_ _ _ xx _ _ _ _"
+		rs = con.query(bodyQuery)
+		puts con.affected_rows
+		if con.affected_rows > 0
+			json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
 		else
-			setQuery = setQuery + k + "= '"  + v + "', "
-			puts "#{k}: #{v}"
+			json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
 		end
-	end
+		response.push(json)
+		response.to_json
 
-	query = mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
-
-
-	#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
-
-    	rs = con.query(query)
-
-	puts con.affected_rows
-
-	if con.affected_rows > 0
-		json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
+		#puts bodyQuery
+		#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
 	else
-		json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
+		whereQuery = whereQuery + id
+		params.each do |k, v|
+			case k
+			when "splat", "captures"
+				break
+			else
+				setQuery = setQuery + k + "= '"  + v + "', "
+				puts "#{k}: #{v}"
+			end
+		end
+		query = mainQuery + setQuery.slice(0, setQuery.length - 2) + " " + whereQuery
+		rs = con.query(query)
+		puts con.affected_rows
+		if con.affected_rows > 0
+			json = {:data => { :id => "#{params[:id]}" }, "msg" => "Actualizado correctamente", :status => "1"}
+		else
+			json = {:data => { :id => "#{params[:id]}" }, "msg" => "El registro no fue actualizado", :status => "0"}
+		end
+		response.push(json)
+		response.to_json
+
+		#curl -X PUT -d title='Jarabe De Palo - Me Gusta Como Erez' -d hash='hAxiPFE6pqM' localhost:9494/songs/1
 	end
-
-	response.push(json)
-	response.to_json
-
-
 end
 
 
@@ -142,22 +179,18 @@ date = time.to_s.slice(0, time.to_s.length - 6)
 votes = '0'
 
 bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
-
-#puts bodyQuery
-#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
-
-
 rs = con.query(bodyQuery)
 puts con.affected_rows
-
 if con.affected_rows > 0
 	json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
 else
 	json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
 end
-
 response.push(json)
 response.to_json
+
+#puts bodyQuery
+#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
 
 
 end
