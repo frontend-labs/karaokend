@@ -4,18 +4,18 @@ require 'json'
 require 'mysql'
 require 'yaml'
 
+
 class Karaokend < Sinatra::Base
 
 	config = YAML.load_file('config/local.yml')
 	mysql = config['mysql']
 
-
 	con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 	configure do
 		set :port, 9494
-		# set :bind, 'localhost'
-		# set :public_folder, 'public/'
+		#set :bind, 'localhost'
+		#set :public_folder, 'public/'
 		set :bind, 'karaokend.frontendlabs.io'
 		set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
 	end
@@ -28,6 +28,10 @@ class Karaokend < Sinatra::Base
 				'Access-Control-Max-Age' => '1728000'
 	end
 
+
+	get "/" do
+		redirect '/index.html'
+	end
 
 
 	# GET METHOD
@@ -59,6 +63,7 @@ class Karaokend < Sinatra::Base
 
 
 	put "/songs/:id" do
+
 		request.body.rewind
 		request_payload = JSON.parse request.body.read
 
@@ -141,40 +146,37 @@ class Karaokend < Sinatra::Base
 	end
 
 
-
 	post '/songs' do
 
-	query = ''
-	setQuery = ''
-	headQuery = ''
-	bodyQuery = ""
-	response = []
+		query = ''
+		setQuery = ''
+		headQuery = ''
+		bodyQuery = ""
+		response = []
 
-	current_time = Time.now.getutc
-	time = current_time.getlocal("-05:00")
+		current_time = Time.now.getutc
+		time = current_time.getlocal("-05:00")
 
-	id_provider = "#{params[:id_provider]}"
-	title = "#{params[:title]}"
-	hash = "#{params[:hash]}"
-	duration = "#{params[:duration]}"
-	date = time.to_s.slice(0, time.to_s.length - 6)
-	votes = '0'
+		id_provider = "#{params[:id_provider]}"
+		title = "#{params[:title]}"
+		hash = "#{params[:hash]}"
+		duration = "#{params[:duration]}"
+		date = time.to_s.slice(0, time.to_s.length - 6)
+		votes = '0'
 
-	bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
-	rs = con.query(bodyQuery)
-	puts con.affected_rows
-	if con.affected_rows > 0
-		json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
-	else
-		json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
-	end
+		bodyQuery = "INSERT INTO song (id, id_provider, title, hash, duration, date, votes) VALUES (NULL, '" + id_provider + "', '" + title + "', '" + hash + "', '" + duration + "', '" + date + "', '" + votes + "')"
+		rs = con.query(bodyQuery)
+		puts con.affected_rows
+		if con.affected_rows > 0
+			json = {:data => {}, "msg" => "Registro insertado correctamente", :status => "1"}
+		else
+			json = {:data => {}, "msg" => "El registro no fue insertado", :status => "0"}
+		end
+		response.push(json)
+		response.to_json
 
-	response.push(json)
-	response.to_json
-
-	#puts bodyQuery
-	#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
-
+		#puts bodyQuery
+		#curl --data "id_provider=1&title=algo&hash=xxx&duration=9:70" http://localhost:9494/songs
 	end
 
 
@@ -191,7 +193,6 @@ class Karaokend < Sinatra::Base
 		rs = con.query(query)
 		puts con.affected_rows
 
-
 		if con.affected_rows > 0
 			json = {:data => { :id => "#{params[:id]}" }, "msg" => "Eliminado correctamente", :status => "1"}
 		else
@@ -200,9 +201,6 @@ class Karaokend < Sinatra::Base
 
 		response.push(json)
 		response.to_json
-
 	end
 
-
 end
-
