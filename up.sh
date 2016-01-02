@@ -1,2 +1,2 @@
 #!/bin/sh
-ruby server.rb
+ruby ./server.rb
