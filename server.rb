@@ -12,8 +12,8 @@ con = Mysql.new mysql['server'], mysql['user'], mysql['pass'], mysql['db']
 
 configure do
 	set :port, 9494
-	# set :bind, 'localhost'
-	# set :public_folder, 'public/'
+	#set :bind, 'localhost'
+	#set :public_folder, 'public/'
 	set :bind, 'karaokend.frontendlabs.io'
 	set :public_folder, '/var/www/karaokend.frontendlabs.io/public/'
 end
