@@ -1,6 +1,9 @@
 # karaokend
 karaoke-frontend
 
+[http://karaokend.frontendlabs.io](http://karaokend.frontendlabs.io)
+
+
 ```
 sudo apt-get install libmysqlclient-dev
 sudo apt-get install ruby1.9.1-dev
